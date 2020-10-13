@@ -295,7 +295,7 @@ var blueCommands = {
             .click(data.category)
             .waitForElementVisible('@FAQHeader')
             .verify.containsText('@FAQHeader', data.header)
-            .click('@home')
+            .click('@homeButton')
         return this
     },
     FAQSearchTest: function (data) {
@@ -307,9 +307,101 @@ var blueCommands = {
         this
             .waitForElementPresent('@FAQResults')
             .verify.containsText('@FAQResults', data)
+            .click('@homeButton')
+    },
+
+    bottomFooter: function () {
+        this
+            .pause(2000)
+            .click('@menu')
+            .verify.urlEquals('https://www.blueapron.com/pages/sample-recipes')
+            .click('@pricing')
+            .verify.urlEquals('https://www.blueapron.com/pricing')
+            .pause(100)
+            .click('@vision')
+            .verify.urlEquals('https://www.blueapron.com/pages/vision')
+            .pause(2000)
+            .click('@wine')
+            .verify.urlEquals('https://www.blueapron.com/wine')
+            .click('@market')
+            .verify.urlEquals('https://www.blueapron.com/market')
+            .click('@gifts')
+            .verify.urlEquals('https://www.blueapron.com/gifts')
+            .click('@blog')
+            .verify.urlEquals('https://blog.blueapron.com/')
             .click('@home')
+            .verify.urlEquals('https://www.blueapron.com/?utm_source=organic&utm_medium=blog&utm_campaign=blog')
+            .click('@cookbook')
+            .verify.urlEquals('https://www.blueapron.com/cookbook')
+            .click('@suppliers')
+            .verify.urlEquals('https://www.blueapron.com/pages/meet-our-recent-partners')
+            .click('@affiliates')
+            .verify.urlEquals('https://www.blueapron.com/pages/affiliates')
+            .click('@supply')
+            .verify.urlEquals('https://www.blueapron.com/pages/supply-chain-disclosure')
+            .click('@safety')
+            .verify.urlEquals('https://blog.blueapron.com/foodsafety/')
+            .click('@home')
+            .verify.urlEquals('https://www.blueapron.com/?utm_source=organic&utm_medium=blog&utm_campaign=blog')
+            .click('@careers')
+            .verify.urlEquals('https://www.blueapron.com/pages/our-team')
+            .click('@press')
+            .verify.urlEquals('https://press.blueapron.com/')
+            .click('@home2')
+            .click('@team')
+            .verify.urlEquals('https://www.blueapron.com/pages/our-team')
+            .click('@investor')
+            .verify.urlEquals('https://investors.blueapron.com/')
+            .click('@home3')
+            .click('@help')
+            .verify.urlEquals('https://support.blueapron.com/hc/en-us')
+
+        return this
+
+
+
+
+    },
+    mealCards: function (data) {
+        this
+            .click('@giftsTop')
+        console.log(data.dollars)
+        if (data.amount === '@customAmount') {
+            this
+                .setValue('@customAmount', data.dollars)
+                .useCss()
+                .click('[type="submit"]')
+        }
+        else {
+            this
+                .click(data.amount)
+        }
+        if (data.delivery === '@email') {
+            this
+                .click('@wineTab')
+                .click('@customAmount')
+                .click('@wineTab')
+                .setValue('@yourName', data.nameOne)
+                .setValue('@otherName', data.nameTwo)
+                .setValue('@emailName', data.nameEmail)
+                .click('@state')
+                .setValue('@state', 'California')
+                .clearValue('@message')
+                .setValue('@message', data.giftMessage)
+                .click('@wineCart')
+        }
+        else {
+            this
+                .click(data.delivery)
+        }
+        this
+            .click('@addCart')
+            .useXpath()
+            .verify.containsText(`//p[contains(text(), "${data.dollars}")]`, data.dollars)
     }
+
 }
+
 
 
 
@@ -566,7 +658,7 @@ module.exports = {
             locateStrategy: 'xpath'
 
         },
-        home: '.logo',
+        homeButton: '.logo',
         // On The Menu
         vegetarian: {
             selector: '//button/span[contains(text(),"Vegetarian")]',
@@ -668,7 +760,7 @@ module.exports = {
         FAQSearch: '#query',
         FAQResults: '.search-results-column',
 
-
+        //bottom menu navigation
         menu: {
             selector: '(//a[@data-tracking-name="On The Menu"])[3]',
             locateStrategy: 'xpath'
@@ -742,13 +834,51 @@ module.exports = {
         home3: {
             selector: '//a[@href="https://blueapron.com"][1]',
             locateStrategy: 'xpath'
-        }
+        },
+        sixty: 'label[for="60-value-tab"]',
+        oneTwenty: 'label[for="120-value-tab"]',
+        twoForty: 'label[for="240-value-tab"]',
+        customAmount: 'input[id="custom-amount"]',
+        email: 'label[class="ba-input-icon gift-label"]',
+        addCart: 'button[id="gift-btn"]',
+        wineCart: 'button[id="message-btn"]',
+        yourName: 'input[placeholder="Your name"]',
+        otherName: 'input[name="recipient_name"]',
+        emailName: 'input[class="string email form-input gift-form-input"]',
+        message: 'textarea[placeholder="I hope you enjoy the gift!"]',
+        wineTab: 'label[for="wine-gift-tab"]',
+        state: 'select[class="state form-input gift-form-input"]',
+        california: 'option[value="CA"]',
+        atHome: {
+            selector: '//label[contains(text(),"Print")]',
+            locateStrategy: 'xpath'
+        },
+        cart: '.cart-container',
+        market: {
+            selector: '(//a[@data-tracking-name="Shop"])[2]',
+            locateStrategy: 'xpath'
+        },
+        fallWineHeader: {
+            selector: '(//h3[@class="prod-cat-title"])[1]',
+            locateStrategy: 'xpath'
+        },
+        essentialWines: {
+            selector: '(//h3[@class="prod-cat-title"])[2]',
+            locateStrategy: 'xpath'
+        },
+        kitchenTools: {
+            selector: '(//h3[@class="prod-cat-title"])[3]',
+            locateStrategy: 'xpath'
+        },
+        pantry: {
+            selector: '(//h3[@class="prod-cat-title"])[4]',
+            locateStrategy: 'xpath'
+        },
+        wineCases: {
+            selector: '(//h3[@class="prod-cat-title"])[5]',
+            locateStrategy: 'xpath'
+        },
+        addCart: 'button[id="gift-btn"]'
     }
-
-
-
 }
 
-
-
-}
